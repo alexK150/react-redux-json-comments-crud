@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
+import CommentItem from "./CommentItem";
 
 const Comments = (props) => {
   const [comments, setComments] = useState([])
@@ -30,7 +31,10 @@ const Comments = (props) => {
     <div>
       <h3>Comments</h3>
       {!isLoading && comments.length === 0 ? (<p>There is no comments...</p>) :
-        comments.map(c => <div key={c.id}>{c.name}</div>)
+        comments.map(c =>
+          <ul>
+            <CommentItem comment={c}/>
+          </ul>)
       }
     </div>
   )
