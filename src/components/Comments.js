@@ -1,28 +1,30 @@
 import React, {useState, useEffect} from 'react';
+import {connect} from 'react-redux'
 import axios from 'axios';
 import CommentItem from "./CommentItem";
 import AddCommentModalForm from "./AddCommentModalForm";
+import {getComments} from '../redux/actions/commentActions'
 
-const Comments = (props) => {
-  const [comments, setComments] = useState([])
-  const [isLoading, setLoading] = useState(false)
+const Comments = ({comments: {comments, isLoading, current}}) => {
+  // const [comments, setComments] = useState([])
+  // const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
     getComments()
   }, [])
 
-  const getComments = async () => {
-    setLoading(true)
-    await axios.get(`http://localhost:5000/comments`)
-      .then(res => {
-        const fetchedComments = res.data;
-        setComments(fetchedComments);
-      })
+  // const getComments = async () => {
+  //   setLoading(true)
+  //   await axios.get(`http://localhost:5000/comments`)
+  //     .then(res => {
+  //       const fetchedComments = res.data;
+  //       setComments(fetchedComments);
+  //     })
+  //
+  //   setLoading(false)
+  // }
 
-    setLoading(false)
-  }
-
-  if (isLoading) {
+  if (isLoading || comments === null) {
     return <div className="spinner-border text-primary" role="status">
       <span className="sr-only">Loading...</span>
     </div>
@@ -42,4 +44,8 @@ const Comments = (props) => {
   )
 }
 
-export default Comments;
+const mapStateToProps = state =>({
+  comments: state.comments
+})
+
+export default connect(mapStateToProps, getComments) (Comments);
