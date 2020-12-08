@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import CommentItem from "./CommentItem";
+import AddCommentModalForm from "./AddCommentModalForm";
 
 const Comments = (props) => {
   const [comments, setComments] = useState([])
@@ -30,9 +31,10 @@ const Comments = (props) => {
   return (
     <div>
       <h3>Comments</h3>
+      <AddCommentModalForm />
       {!isLoading && comments.length === 0 ? (<p>There is no comments...</p>) :
         comments.map(c =>
-          <ul>
+          <ul key={c.id}>
             <CommentItem comment={c}/>
           </ul>)
       }
