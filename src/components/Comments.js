@@ -1,28 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux'
-import axios from 'axios';
 import CommentItem from "./CommentItem";
 import AddCommentModalForm from "./AddCommentModalForm";
 import {getComments} from '../redux/actions/commentActions'
 
-const Comments = ({comments: {comments, isLoading, current}}) => {
-  // const [comments, setComments] = useState([])
-  // const [isLoading, setLoading] = useState(false)
+const Comments = ({comments: {comments, isLoading, current}, getComments}) => {
 
   useEffect(() => {
     getComments()
   }, [])
-
-  // const getComments = async () => {
-  //   setLoading(true)
-  //   await axios.get(`http://localhost:5000/comments`)
-  //     .then(res => {
-  //       const fetchedComments = res.data;
-  //       setComments(fetchedComments);
-  //     })
-  //
-  //   setLoading(false)
-  // }
 
   if (isLoading || comments === null) {
     return <div className="spinner-border text-primary" role="status">
@@ -48,4 +34,4 @@ const mapStateToProps = state =>({
   comments: state.comments
 })
 
-export default connect(mapStateToProps, getComments) (Comments);
+export default connect(mapStateToProps, {getComments}) (Comments);
