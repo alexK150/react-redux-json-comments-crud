@@ -1,4 +1,4 @@
-import {GET_COMMENTS, SET_LOADING} from "../actions/types";
+import {ADD_COMMENT, GET_COMMENTS, SET_LOADING} from "../actions/types";
 
 const initialState = {
   comments: null,
@@ -12,6 +12,12 @@ export const commentReducer = (state = initialState, action) => {
       return {
         ...state,
         comments: action.payload,
+        isLoading: false
+      }
+    case ADD_COMMENT:
+      return {
+        ...state,
+        comments: [...state.comments, action.payload],
         isLoading: false
       }
     case SET_LOADING:

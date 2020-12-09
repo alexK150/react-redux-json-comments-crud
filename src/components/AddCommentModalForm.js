@@ -1,18 +1,31 @@
 import React, {useState} from 'react';
 import {Button, Modal} from "react-bootstrap";
 import AddBtn from "./AddBtn";
+import {connect} from 'react-redux';
+import {addComment} from '../redux/actions/commentActions'
 
-const AddCommentModalForm = (props) => {
+const AddCommentModalForm = ({addComment}) => {
   const [title, setTitle] = useState('')
   const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
+  const [body, setCommentBody] = useState('')
   const [showModal, setShowModal] = useState(false);
 
   const handleSubmit = () => {
-    if(title === '' || email === '' || message === ''){
+    if (title === '' || email === '' || body === '') {
       alert('All fields must be filled up')
     } else {
-      console.log(title, email, message)
+      debugger
+      const newComment = {
+        title,
+        email,
+        body
+      }
+      addComment(newComment)
+      alert('Comment added!')
+
+      setTitle('')
+      setEmail('')
+      setCommentBody('')
       setShowModal(false)
     }
   };
@@ -29,20 +42,31 @@ const AddCommentModalForm = (props) => {
         <Modal.Body>
           <div className={'row'}>
             <div className={'input-field'}>
-              <input type="text" name={'title'} value={title} onChange={e => setTitle(e.target.value)}/>
-              <label htmlFor="title" className={'active'}>Title</label>
+              <input
+                type="text"
+                name={'title'}
+                value={title} onChange={e => setTitle(e.target.value)}
+                placeholder={'Write title of the comment'}/>
             </div>
           </div>
           <div className={'row'}>
             <div className={'input-field'}>
-              <input type="email" name={'email'} value={email} onChange={e => setEmail(e.target.value)}/>
-              <label htmlFor="email" className={'active'}>Email</label>
+              <input
+                type="email"
+                name={'email'}
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder={'Write your Email'}/>
             </div>
           </div>
           <div className={'row'}>
             <div className={'input-field'}>
-              <input type="text" name={'message'} value={message} onChange={e => setMessage(e.target.value)}/>
-              <label htmlFor="message" className={'active'}>Message</label>
+              <input
+                type="text"
+                name={'message'}
+                value={body}
+                onChange={e => setCommentBody(e.target.value)}
+                placeholder={'Write text of the comment'}/>
             </div>
           </div>
         </Modal.Body>
@@ -50,7 +74,7 @@ const AddCommentModalForm = (props) => {
           <Button variant="secondary" onClick={handleShow}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleSubmit} >
+          <Button variant="primary" onClick={handleSubmit}>
             Save Changes
           </Button>
         </Modal.Footer>
@@ -59,4 +83,4 @@ const AddCommentModalForm = (props) => {
   )
 }
 
-export default AddCommentModalForm;
+export default connect(null, {addComment})(AddCommentModalForm);
